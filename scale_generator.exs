@@ -1,8 +1,11 @@
 defmodule ScaleGenerator do
 
   @steps %{ "m" => 1, "M" => 2, "A" => 3 }
-  @c_chromatic_scale ~w(C C# D D# E F F# G G# A A# B)
-  @c_flat_chromatic_scale ~w(C Db D Eb E F Gb G Ab A Bb B)
+  @regular_chromatic_scale ~w(C C# D D# E F F# G G# A A# B)
+  @flat_chromatic_scale ~w(C Db D Eb E F Gb G Ab A Bb B)
+
+  @flat_chromatic_scale_tonics ~w(Ab Bb bb c Db d Eb eb F f Gb g)
+
   @doc """
   Find the note for a given interval (`step`) in a `scale` after the `tonic`.
 
@@ -46,7 +49,7 @@ defmodule ScaleGenerator do
   """
   @spec chromatic_scale(tonic :: String.t()) :: list(String.t())
   def chromatic_scale(tonic \\ "C") do
-    _get_full_scale(@c_chromatic_scale, tonic)
+    _get_full_scale(@regular_chromatic_scale, tonic)
   end
 
   @doc """
@@ -63,7 +66,7 @@ defmodule ScaleGenerator do
   """
   @spec flat_chromatic_scale(tonic :: String.t()) :: list(String.t())
   def flat_chromatic_scale(tonic \\ "C") do
-    _get_full_scale(@c_flat_chromatic_scale, tonic)
+    _get_full_scale(@flat_chromatic_scale, tonic)
   end
 
   @doc """
@@ -78,9 +81,10 @@ defmodule ScaleGenerator do
   """
   @spec find_chromatic_scale(tonic :: String.t()) :: list(String.t())
   def find_chromatic_scale(tonic) do
+    # flat_chromatic_scale uses:
     cond do
-      Regex.match?(~r/^[A-G]#?$/, tonic) -> _get_full_scale(@c_chromatic_scale, tonic)
-      true -> _get_full_scale(@c_flat_chromatic_scale, tonic)
+      Enum.member?(@flat_chromatic_scale_tonics, tonic) -> _get_full_scale(@flat_chromatic_scale, tonic)
+      true -> _get_full_scale(@regular_chromatic_scale, tonic)
     end
   end
 

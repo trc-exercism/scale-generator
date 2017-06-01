@@ -151,52 +151,52 @@ defmodule ScaleGeneratorTest do
       assert ScaleGenerator.find_chromatic_scale("A") == ~w(A A# B C C# D D# E F F# G G# A)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using A#" do
       assert ScaleGenerator.find_chromatic_scale("A#") == ~w(A# B C C# D D# E F F# G G# A A#)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using B" do
       assert ScaleGenerator.find_chromatic_scale("B") == ~w(B C C# D D# E F F# G G# A A# B)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using C" do
       assert ScaleGenerator.find_chromatic_scale("C") == ~w(C C# D D# E F F# G G# A A# B C)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using C#" do
       assert ScaleGenerator.find_chromatic_scale("C#") == ~w(C# D D# E F F# G G# A A# B C C#)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using D" do
       assert ScaleGenerator.find_chromatic_scale("D") == ~w(D D# E F F# G G# A A# B C C# D)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using D#" do
       assert ScaleGenerator.find_chromatic_scale("D#") == ~w(D# E F F# G G# A A# B C C# D D#)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using E" do
       assert ScaleGenerator.find_chromatic_scale("E") == ~w(E F F# G G# A A# B C C# D D# E)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using F#" do
       assert ScaleGenerator.find_chromatic_scale("F#") == ~w(F# G G# A A# B C C# D D# E F F#)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using G" do
       assert ScaleGenerator.find_chromatic_scale("G") == ~w(G G# A A# B C C# D D# E F F# G)
     end
 
-    @tag :pending
+    # @tag :pending
     test "using G#" do
       assert ScaleGenerator.find_chromatic_scale("G#") == ~w(G# A A# B C C# D D# E F F# G G#)
     end
