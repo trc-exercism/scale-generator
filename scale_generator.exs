@@ -22,15 +22,15 @@ defmodule ScaleGenerator do
   """
   @spec step(scale :: list(String.t()), tonic :: String.t(), step :: String.t()) :: list(String.t())
   def step(scale, tonic, step) do
-    Enum.at(scale, wrap_scale(scale, get_scale_index(scale, tonic) + @steps[step]))
+    Enum.at(scale, _wrap_scale(scale, _get_scale_index(scale, tonic) + @steps[step]))
   end
 
-  def get_scale_index(scale, tonic) do
-    scale |> Enum.find_index(fn(current_tonic) -> current_tonic == tonic end)
-  end
-
-  def wrap_scale(scale, unwrapped_index) do
+  defp _wrap_scale(scale, unwrapped_index) do
     rem(unwrapped_index, length(scale))
+  end
+
+  defp _get_scale_index(scale, tonic) do
+    scale |> Enum.find_index(fn(current_tonic) -> current_tonic == tonic end)
   end
 
   @doc """
@@ -101,10 +101,32 @@ defmodule ScaleGenerator do
   """
   @spec scale(tonic :: String.t(), pattern :: String.t()) :: list(String.t())
   def scale(tonic, pattern) do
+    cond do
+      Enum.member?(@flat_chromatic_scale_tonics, tonic) -> _generate_scale(String.capitalize(tonic), pattern, @flat_chromatic_scale)
+      true -> _generate_scale(String.capitalize(tonic), pattern, @regular_chromatic_scale)
+    end
+  end
+
+  defp _generate_scale(tonic, pattern, scale) do
+    pattern
+      |> String.split("", trim: true)
+      |> _get_step_list
+      |> Enum.reduce({[], 0}, fn(current_step, {arr, step_so_far}) -> {arr ++ [_specific_step(scale, tonic, step_so_far + current_step)], step_so_far + current_step} end)
+      |> _extract_result
+  end
+
+  defp _get_step_list(steps) do
+    [0] ++ Enum.map(steps, fn(current_tonic) -> @steps[current_tonic] end)
+  end
+
+  defp _specific_step(scale, tonic, step) do
+    Enum.at(scale, _wrap_scale(scale, _get_scale_index(scale, tonic) + step))
   end
 
   defp _get_full_scale(partial_scale, tonic) do
-    Enum.slice(partial_scale ++ partial_scale, get_scale_index(partial_scale, String.capitalize(tonic)), length(partial_scale) + 1)
+    Enum.slice(partial_scale ++ partial_scale, _get_scale_index(partial_scale, String.capitalize(tonic)), length(partial_scale) + 1)
   end
+
+  defp _extract_result({result, _steps}), do: result
 
 end
